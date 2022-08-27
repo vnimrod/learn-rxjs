@@ -7,8 +7,9 @@
            If we try to access the observable directly(without the async pipe) it will not work.
            async pipe here will subscribe to beginnerCourses$ and is going to make the values emitted by this observable, available here to loop on. 
       -->
+      <!-- prettier-ignore -->
       <mat-card
-        *ngFor="let course of beginnerCourses$ | async"
+        *ngFor="let course of (beginnerCourses$ | async)"
         class="course-card mat-elevation-z10"
       >
         <mat-card-header>
@@ -42,8 +43,9 @@
     </mat-tab>
 
     <mat-tab label="Advanced">
+      <!-- prettier-ignore -->
       <mat-card
-        *ngFor="let course of advancedCourses$ | async"
+        *ngFor="let course of (advancedCourses$ | async)"
         class="course-card mat-elevation-z10"
       >
         <mat-card-header>

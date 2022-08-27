@@ -33,7 +33,21 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     // $ - is a convention to identify an observable argument.
-    const courses$ = this.coursesService.loadAllCourses();
+    const courses$ = this.coursesService
+      .loadAllCourses()
+      .pipe(map((courses) => courses.sort(sortCoursesBySeqNo)));
+
+    this.beginnerCourses$ = courses$.pipe(
+      map((courses) =>
+        courses.filter((course) => course.category === "BEGINNER")
+      )
+    );
+
+    this.advancedCourses$ = courses$.pipe(
+      map((courses) =>
+        courses.filter((course) => course.category === "ADVANCED")
+      )
+    );
   }
 
   editCourse(course: Course) {
