@@ -1,6 +1,12 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Course} from '../model/course';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Course } from "../model/course";
 import {
   debounceTime,
   distinctUntilChanged,
@@ -11,44 +17,24 @@ import {
   concatMap,
   switchMap,
   withLatestFrom,
-  concatAll, shareReplay, catchError
-} from 'rxjs/operators';
-import {merge, fromEvent, Observable, concat, throwError} from 'rxjs';
-import {Lesson} from '../model/lesson';
-
+  concatAll,
+  shareReplay,
+  catchError,
+} from "rxjs/operators";
+import { merge, fromEvent, Observable, concat, throwError } from "rxjs";
+import { Lesson } from "../model/lesson";
 
 @Component({
-  selector: 'course',
-  templateUrl: './course.component.html',
-  styleUrls: ['./course.component.css']
+  selector: "course",
+  templateUrl: "./course.component.html",
+  styleUrls: ["./course.component.css"],
 })
 export class CourseComponent implements OnInit {
-
   course: Course;
 
   lessons: Lesson[];
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute) {}
 
-
-  }
-
-  ngOnInit() {
-
-
-
-  }
-
-
+  ngOnInit() {}
 }
-
-
-
-
-
-
-
-
-
-
-
