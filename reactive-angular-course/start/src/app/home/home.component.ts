@@ -12,9 +12,9 @@ import {
   shareReplay,
   tap,
 } from "rxjs/operators";
-import { HttpClient } from "@angular/common/http";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { CourseDialogComponent } from "../course-dialog/course-dialog.component";
+import { CourseService } from "../services/courses.service";
 
 @Component({
   selector: "home",
@@ -22,24 +22,18 @@ import { CourseDialogComponent } from "../course-dialog/course-dialog.component"
   styleUrls: ["./home.component.css"],
 })
 export class HomeComponent implements OnInit {
-  beginnerCourses: Course[];
+  beginnerCourses$: Observable<Course[]>;
 
-  advancedCourses: Course[];
+  advancedCourses$: Observable<Course[]>;
 
-  constructor(private http: HttpClient, private dialog: MatDialog) {}
+  constructor(
+    private coursesService: CourseService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
-    this.http.get("/api/courses").subscribe((res) => {
-      const courses: Course[] = res["payload"].sort(sortCoursesBySeqNo);
-
-      this.beginnerCourses = courses.filter(
-        (course) => course.category == "BEGINNER"
-      );
-
-      this.advancedCourses = courses.filter(
-        (course) => course.category == "ADVANCED"
-      );
-    });
+    // $ - is a convention to identify an observable argument.
+    const courses$ = this.coursesService.loadAllCourses();
   }
 
   editCourse(course: Course) {
