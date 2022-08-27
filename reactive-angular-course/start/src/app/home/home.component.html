@@ -3,8 +3,12 @@
 
   <mat-tab-group>
     <mat-tab label="Beginners">
+      <!-- beginnerCourses$, is an observable that we must subscribe to it in order to get the data.
+           If we try to access the observable directly(without the async pipe) it will not work.
+           async pipe here will subscribe to beginnerCourses$ and is going to make the values emitted by this observable, available here to loop on. 
+      -->
       <mat-card
-        *ngFor="let course of beginnerCourses$"
+        *ngFor="let course of beginnerCourses$ | async"
         class="course-card mat-elevation-z10"
       >
         <mat-card-header>
