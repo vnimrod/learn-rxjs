@@ -10,13 +10,17 @@
       <!-- prettier-ignore -->
       <courses-card-list
       [courses]="(beginnerCourses$ | async)"
-    ></courses-card-list>
+      (coursesChanged)="reloadCourses()"
+    >
+      
+    </courses-card-list>
     </mat-tab>
 
     <mat-tab label="Advanced">
       <!-- prettier-ignore -->
       <courses-card-list
         [courses]="(advancedCourses$ | async)"
+        (coursesChanged)="reloadCourses()"
       ></courses-card-list>
     </mat-tab>
   </mat-tab-group>

@@ -27,6 +27,10 @@ export class HomeComponent implements OnInit {
   constructor(private coursesService: CourseService) {}
 
   ngOnInit() {
+    this.reloadCourses();
+  }
+
+  reloadCourses() {
     // $ - is a convention to identify an observable argument.
     const courses$ = this.coursesService
       .loadAllCourses()
@@ -34,8 +38,8 @@ export class HomeComponent implements OnInit {
 
     // Next two subscription to courses$ observable, will trigger to http calls.
     /* Problem: we derived two observables from courses$, we produce 2 subscriptions on the view level(home.html file) using the async pipe, that result 2 http requests.
-       Solution: using shareReplay operator on the http observable return by angular services that using HttpClient (on courses.service) to avoid duplicate http call by subscription.
-    */
+         Solution: using shareReplay operator on the http observable return by angular services that using HttpClient (on courses.service) to avoid duplicate http call by subscription.
+      */
     this.beginnerCourses$ = courses$.pipe(
       map((courses) =>
         courses.filter((course) => course.category === "BEGINNER")
