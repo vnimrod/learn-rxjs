@@ -12,8 +12,6 @@ import {
   shareReplay,
   tap,
 } from "rxjs/operators";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { CourseDialogComponent } from "../course-dialog/course-dialog.component";
 import { CourseService } from "../services/courses.service";
 
 @Component({
@@ -26,10 +24,7 @@ export class HomeComponent implements OnInit {
 
   advancedCourses$: Observable<Course[]>;
 
-  constructor(
-    private coursesService: CourseService,
-    private dialog: MatDialog
-  ) {}
+  constructor(private coursesService: CourseService) {}
 
   ngOnInit() {
     // $ - is a convention to identify an observable argument.
@@ -41,7 +36,6 @@ export class HomeComponent implements OnInit {
     /* Problem: we derived two observables from courses$, we produce 2 subscriptions on the view level(home.html file) using the async pipe, that result 2 http requests.
        Solution: using shareReplay operator on the http observable return by angular services that using HttpClient (on courses.service) to avoid duplicate http call by subscription.
     */
-
     this.beginnerCourses$ = courses$.pipe(
       map((courses) =>
         courses.filter((course) => course.category === "BEGINNER")
@@ -53,17 +47,5 @@ export class HomeComponent implements OnInit {
         courses.filter((course) => course.category === "ADVANCED")
       )
     );
-  }
-
-  editCourse(course: Course) {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "400px";
-
-    dialogConfig.data = course;
-
-    const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
   }
 }
