@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, shareReplay } from "rxjs/operators";
 import { Course } from "../model/course";
 
 @Injectable({
@@ -22,7 +22,10 @@ export class CourseService {
         when we use pipe here, we kind of destructuring the data array from payload. same as const { data: courses } = response
     */
         .get<Course[]>("/api/courses")
-        .pipe(map((res) => res["payload"]))
+        .pipe(
+          map((res) => res["payload"]),
+          shareReplay()
+        )
     );
   }
 }
