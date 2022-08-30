@@ -14,6 +14,7 @@ import {
 } from "rxjs/operators";
 import { CourseService } from "../services/courses.service";
 import { LoadingService } from "../loading/loading.service";
+import { MessagesService } from "../messages/messages.service";
 
 @Component({
   selector: "home",
@@ -27,7 +28,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private coursesService: CourseService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private messageService: MessagesService
   ) {}
 
   ngOnInit() {
@@ -40,6 +42,12 @@ export class HomeComponent implements OnInit {
     // $ - is a convention to identify an observable argument.
     const courses$ = this.coursesService.loadAllCourses().pipe(
       map((courses) => courses.sort(sortCoursesBySeqNo)),
+      catchError((err) => {
+        const message = "Could not load courses";
+        this.messageService.showErrors(message);
+        console.log(message, err);
+        return throwError(err);
+      }),
       // finalize - make sure to stop the loading indicator in any case.
       finalize(() => this.loadingService.loadingOff())
     );
