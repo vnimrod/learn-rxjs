@@ -13,6 +13,7 @@ import {
   tap,
 } from "rxjs/operators";
 import { CourseService } from "../services/courses.service";
+import { LoadingService } from "../loading/loading.service";
 
 @Component({
   selector: "home",
@@ -24,17 +25,26 @@ export class HomeComponent implements OnInit {
 
   advancedCourses$: Observable<Course[]>;
 
-  constructor(private coursesService: CourseService) {}
+  constructor(
+    private coursesService: CourseService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit() {
     this.reloadCourses();
   }
 
   reloadCourses() {
+    this.loadingService.loadingOn();
+
     // $ - is a convention to identify an observable argument.
-    const courses$ = this.coursesService
-      .loadAllCourses()
-      .pipe(map((courses) => courses.sort(sortCoursesBySeqNo)));
+    const courses$ = this.coursesService.loadAllCourses().pipe(
+      map((courses) => courses.sort(sortCoursesBySeqNo)),
+      // finalize - make sure to stop the loading indicator in any case.
+      finalize(() => this.loadingService.loadingOff())
+    );
+
+    // const loadcourses = this.loadingService.showLoadingUntilCompleted(courses$);
 
     // Next two subscription to courses$ observable, will trigger to http calls.
     /* Problem: we derived two observables from courses$, we produce 2 subscriptions on the view level(home.html file) using the async pipe, that result 2 http requests.

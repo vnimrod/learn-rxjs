@@ -5,7 +5,7 @@ import { map, shareReplay } from "rxjs/operators";
 import { Course } from "../model/course";
 
 @Injectable({
-  // providedIn, means that there will be only one instance of this service that is available to the whole app.
+  // providedIn, means that there will be only one instance of this service that is available to the whole app (singleton)
   providedIn: "root",
 })
 export class CourseService {
